@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: ok-app
+    labels:
+      app: ok-app
+spec:
+    replicas: 2
+    selector:
+       matchLabels:
+          app: ok-app
+    template:
+       metadata:
+          labels:
+             app: ok-app
+       spec:
+          containers:
+          - name: service-ok
+            image: krasnovatiy/service-ok:1.5
+            ports:
+              - name: web 
+                containerPort: 8000
+            env:
+              - name: DATABASE_URI
+                valueFrom:
+                  secretKeyRef:
+                    name: ok-secret
+                    key: DATABASE_URI
+              - name: DB_NAME
+                valueFrom:
+                  configMapKeyRef:
+                    name: ok-config
+                    key: DB_NAME

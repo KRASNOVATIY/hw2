@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ok-config
+data:
+  DB_NAME: ok
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ok-secret
+type: Opaque
+data:
+  # postgres://admin:admin@postgres/ok?sslmode=disable
+  DATABASE_URI: cG9zdGdyZXM6Ly9hZG1pbjphZG1pbkBwb3N0Z3Jlcy9vaz9zc2xtb2RlPWRpc2FibGU=

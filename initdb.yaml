@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ok-initdb
+spec:
+  template:
+    metadata:
+      name: ok-initdb
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: post-install-job
+        env:
+          - name: DATABASE_URI
+            value: "postgresql://admin:admin@postgres/ok"
+        image: postgres:latest
+        command:
+          - sh
+          - "-c"
+          - |
+            psql $DATABASE_URI <<'EOF'
+              create table users (id serial primary key, name varchar, phone varchar);
+              insert into users (name, phone) values ('Spasateli', '101'), ('Policiya', '02'), ('Skoraya', '03');
+            EOF
+  backoffLimit: 2
